@@ -1,12 +1,7 @@
 # Emacs Configuration
 
-This repository contains emacs configuration. To use it, simply run the following commands:
+This repository contains emacs configuration. 
 
-```bash
-mkdir -p .config
-cd ~/.config
-git clone git@gitea.idobert.com:johnrscott/emacs.git
-```
 
 ## Before opening emacs for the first time
 

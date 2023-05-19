@@ -257,10 +257,11 @@
   :bind (("C-c m" . compile)
 	 ("C-c c" . recompile))
   :config
-  (setq-default c-basic-offset 8)
+  (setq-default indent-tabs-mode t)
+  (setq-default tab-width 8)
+  (defvaralias 'c-basic-offset 'tab-width)
   (setq c-default-style "linux")
   (setq c-noise-macro-names '("constexpr")))
-
 
 ;; PYTHON CONFIGURATION
 ;;
