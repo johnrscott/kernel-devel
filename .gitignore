@@ -2,8 +2,7 @@ target/
 *~
 *.out
 __pycache__
-.juliahistory
-/custom.el
-/elpa/
-/transient/
+custom.el
+elpa/
+transient/
 *.elc
