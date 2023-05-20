@@ -118,10 +118,11 @@
   (if (member 'dracula custom-enabled-themes)
       (disable-theme 'dracula)
     (load-theme 'dracula t))
-  (set-face-background 'mode-line "orange")
-  (set-face-foreground 'mode-line "black")
-  (set-face-background 'mode-line-inactive "orange")
-  (set-face-foreground 'mode-line-inactive "black"))
+  ;; (set-face-background 'mode-line "orange")
+  ;; (set-face-foreground 'mode-line "black")
+  ;; (set-face-background 'mode-line-inactive "orange")
+  ;; (set-face-foreground 'mode-line-inactive "black")
+  )
 
 (use-package dracula-theme
   :ensure
