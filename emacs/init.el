@@ -10,12 +10,11 @@
 ;;
 ;; On Ubuntu 22.04, you have emacs27 from the package manager.
 ;;
-;; All emacs packages are installed automatically the first
-;; time you open emacs (you can delete the .emacs.d directory
-;; at any tiem and repeat the process). However, you need to
-;; install the following dependencies manually for this
-;; configuration to work. Once you have everything installed,
-;; the configuration should work.
+;; All emacs packages are installed automatically the first time you
+;; open emacs (you can delete the .emacs.d directory at any tiem and
+;; repeat the process). However, you need to install the following
+;; dependencies manually for this configuration to work. Once you have
+;; everything installed, the configuration should work.
 ;;
 ;; * vterm
 ;;   - libtool (sudo apt install libtool-bin)
@@ -44,24 +43,20 @@
 
 ;; ORGANISATION OF THIS FILE 
 ;;
-;; Generic emacs settings (basic settings that apply to
-;; default emacs, no packages) go at the top. Automatic
-;; dependency setup comes next. After that, configurations
-;; are listed roughly in order of what has the most reach.
-;; For example, LSP mode applies to nearly everything, so
-;; it is listed up front; similarly, git setup comes soon
-;; after. All the configurations for particular languages
-;; come next (Rust, C/C++, Python, etc). Finally, simple
-;; one-liner packages (like YAML and JSON mode) are configured
-;; last.
+;; Generic emacs settings (basic settings that apply to default emacs, no
+;; packages) go at the top. Automatic dependency setup comes next. After that,
+;; configurations are listed roughly in order of what has the most reach.  For
+;; example, LSP mode applies to nearly everything, so it is listed up front;
+;; similarly, git setup comes soon after. All the configurations for particular
+;; languages come next (Rust, C/C++, Python, etc). Finally, simple one-liner
+;; packages (like YAML and JSON mode) are configured last.
 ;;
 ;; RECOMMENDATIONS
 ;;
-;; This file mostly sticks to the defaults. This keeps
-;; things working properly -- mostly the default keybindings
-;; and behaviour are sensible. If you change something,
-;; try to change it within its own scope (e.g. make C++
-;; changes in the C++ section, not the LSP section).
+;; This file mostly sticks to the defaults. This keeps things working properly
+;; -- mostly the default keybindings and behaviour are sensible. If you change
+;; something, try to change it within its own scope (e.g. make C++ changes in
+;; the C++ section, not the LSP section).
 
 ;; BEGIN CONFIGURATION
 ;;
@@ -73,14 +68,12 @@
 
 ;; GENERIC EMACS
 ;;
-;; Put any generic emacs configuration you want here.
-;; Feel feel to change anything to your tastes. Try to
-;; keep it to simple settings that are relatively
-;; independent of other more complicated setups (for
-;; example, go careful setting random keybindings that
-;; could break other things further down). In particular,
-;; don't do anything that involves packages (that must
-;; go below the automatic dependency section.
+;; Put any generic emacs configuration you want here.  Feel feel to change
+;; anything to your tastes. Try to keep it to simple settings that are
+;; relatively independent of other more complicated setups (for example, go
+;; careful setting random keybindings that could break other things further
+;; down). In particular, don't do anything that involves packages (that must go
+;; below the automatic dependency section.
 ;;
 (setq inhibit-startup-screen t)
 (menu-bar-mode -1)
@@ -90,20 +83,20 @@
 
 ;; AUTOMATIC DEPENDENCY INSTALLATION
 ;;
-;; NOTE: if you ever get MELPA-related errors while trying to
-;; install a package, it is highly likely refreshing the package
-;; archive will fix it (especially if you haven't done it in
-;; a while): run M-x `package-refresh-packages`.
+;; NOTE: if you ever get MELPA-related errors while trying to install a package,
+;; it is highly likely refreshing the package archive will fix it (especially if
+;; you haven't done it in a while): run M-x `package-refresh-packages`.
 ;;
-;; use-package manages installation of dependencies if they are missing.
-;; In this section, use-package is installed if it is not present, and
-;; then all packages are installed later with use-package.
+;; use-package manages installation of dependencies if they are missing.  In
+;; this section, use-package is installed if it is not present, and then all
+;; packages are installed later with use-package.
 ;;
-;; Only emacs packages will be automatically installed, however, there
-;; are also dependencies on other libraries. 
+;; Only emacs packages will be automatically installed, however, there are also
+;; dependencies on other libraries.
 ;;
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives
+	     '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
 ;; Install use-package to automate other package installation
@@ -115,16 +108,18 @@
 ;;
 ;; You may be interested in the following:
 ;;
-;; C-c d - Toggle dark theme (swaps between the dracula theme
-;;         and the default light theme)
+;; C-c d - Toggle dark theme (swaps between the dracula theme and the default
+;;         light theme)
 ;;
 ;; It will get installed and enabled automatically.
 (defun toggle-dark-theme ()
   "Toggle between dark/light themes"
   (interactive)
-  (if custom-enabled-themes
+  (if (member 'dracula custom-enabled-themes)
       (disable-theme 'dracula)
-    (load-theme 'dracula t)))
+    (load-theme 'dracula t))
+  (set-face-background 'mode-line "orange")
+  (set-face-foreground 'mode-line "black"))
 
 (use-package dracula-theme
   :ensure
@@ -144,12 +139,11 @@
 ;;           scroll the vterm buffer like a normal window,
 ;;           and select and copy text.
 ;;
-;; Unlike other packages in this file, vterm will
-;; only be installed when it is first loaded (defer).
-;; This is because it prompts you to compile the terminal,
-;; which would hold up the process of opening emacs for
-;; the first time (say, if you tried to go away and make
-;; a coffee while it did it). 
+;; Unlike other packages in this file, vterm will only be installed
+;; when it is first loaded (defer).  This is because it prompts you to
+;; compile the terminal, which would hold up the process of opening
+;; emacs for the first time (say, if you tried to go away and make a
+;; coffee while it did it).
 ;;
 ;;
 (use-package vterm
@@ -168,14 +162,15 @@
 ;;
 ;; C-c l G g - bring up a window showing the definition of the
 ;;               item under the cursor
-;; C-c l g r - find all references to the item under the cursor (q to exit)
+;; C-c l g r - find all references to the item under the cursor
+;;               (q to exit)
 ;; C-c l r r - rename the symbol under the cursor throughout project
 ;; C-c l a a - If LSP mode has a code suggestion for a wiggly red line,
 ;;               implement the suggestion.
 ;;
-;; lsp-workspace-removce-all-folders - remove the LSP root directory of
-;;    the project (you will be prompted next time to set the project
-;;    folder again)
+;; lsp-workspace-removce-all-folders - remove the LSP root directory
+;;    of the project (you will be prompted next time to set the
+;;    project folder again)
 ;;
 ;; There are loads of shortcuts. The best thing to do is run
 ;; C-c l ? to see the list
@@ -236,8 +231,9 @@
 
 ;; RUST CONFIGURATION
 ;;
-;; This configuration is taken from https://robert.kra.hn/posts/rust-emacs-setup/.
-;; The only part that is not currently set up is the debugger.
+;; This configuration is taken from
+;; https://robert.kra.hn/posts/rust-emacs-setup/. The only part that
+;; is not currently set up is the debugger.
 ;;
 (use-package rustic
   :ensure)
@@ -263,9 +259,19 @@
   (setq c-default-style "linux")
   (setq c-noise-macro-names '("constexpr")))
 
+;; LINE-LENGTH CONTROL
+;;
+;; You may be interested in the following:
+;;
+;; M-q - reflow a comments paragraph to conform to the line
+;; length.
+;;
 (use-package display-fill-column-indicator
-  :hook (prog-mode . display-fill-column-indicator-mode))  
-
+  :hook (prog-mode . display-fill-column-indicator-mode)
+  :config
+  (setq-default fill-column 80)
+  (setq fill-column-indicator "default"))
+                                                                      
 ;; PYTHON CONFIGURATION
 ;;
 ;; pyright is a language server for python.
