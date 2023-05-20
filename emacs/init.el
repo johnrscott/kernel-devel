@@ -117,12 +117,7 @@
   (interactive)
   (if (member 'dracula custom-enabled-themes)
       (disable-theme 'dracula)
-    (load-theme 'dracula t))
-  ;; (set-face-background 'mode-line "orange")
-  ;; (set-face-foreground 'mode-line "black")
-  ;; (set-face-background 'mode-line-inactive "orange")
-  ;; (set-face-foreground 'mode-line-inactive "black")
-  )
+    (load-theme 'dracula t)))
 
 (use-package dracula-theme
   :ensure
@@ -416,3 +411,8 @@
 ;; to the startup time, down to 1s from about 5s from executing
 ;; "emacs" in bash to ready-to-type in emacs.
 ;;(byte-recompile-directory (expand-file-name user-emacs-directory) 0)
+
+(use-package notmuch
+  :ensure)
+
+(load-file (expand-file-name "lisp/notmuch.el" user-emacs-directory))
