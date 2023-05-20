@@ -256,15 +256,15 @@
   :mode ("\\.tpp\\'" . c++-mode)
   :bind (("C-c m" . compile)
 	 ("C-c c" . recompile))
-  :hook (display-fill-column-indicator-mode)
   :config
-  (setq-default fill-column 110)
-  
   (setq-default indent-tabs-mode t)
   (setq-default tab-width 8)
-  (defvaralias 'c-basic-offset 'tab-width)
+  (setq c-basic-offset 8)
   (setq c-default-style "linux")
   (setq c-noise-macro-names '("constexpr")))
+
+(use-package display-fill-column-indicator
+  :hook (prog-mode . display-fill-column-indicator-mode))  
 
 ;; PYTHON CONFIGURATION
 ;;
@@ -406,4 +406,4 @@
 ;; Byte compile everything (makes a noticeable difference
 ;; to the startup time, down to 1s from about 5s from executing
 ;; "emacs" in bash to ready-to-type in emacs.
-(byte-recompile-directory (expand-file-name user-emacs-directory) 0)
+;;(byte-recompile-directory (expand-file-name user-emacs-directory) 0)
