@@ -6,3 +6,4 @@ custom.el
 elpa/
 transient/
 *.elc
+.lsp*

@@ -11,4 +11,4 @@ echo "Script location $SCRIPT_DIR"
 export XDG_CONFIG_HOME=$SCRIPT_DIR/../
 echo "Using emacs config directory $XDG_CONFIG_HOME" 
 
-emacs
+emacs "$@"

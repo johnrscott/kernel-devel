@@ -256,7 +256,10 @@
   :mode ("\\.tpp\\'" . c++-mode)
   :bind (("C-c m" . compile)
 	 ("C-c c" . recompile))
+  :hook (display-fill-column-indicator-mode)
   :config
+  (setq-default fill-column 110)
+  
   (setq-default indent-tabs-mode t)
   (setq-default tab-width 8)
   (defvaralias 'c-basic-offset 'tab-width)
