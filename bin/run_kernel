@@ -3,16 +3,24 @@
 # You need to have built linux and buildroot for the same
 # architecture
 
+if [ $# -eq 0 ]
+  then
+      echo "You must pass the architecture; e.g. x86_64"
+      exit
+fi
+
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SRC_DIR=$SCRIPT_DIR/../src/
 
-# Configure these locations
-LINUX_SRC=$SRC_DIR/linux-6.3.2
-BUILDROOT_SRC=$SRC_DIR/buildroot
+ARCH=$1
 
-qemu-system-x86_64 \
+# Configure these locations
+LINUX_SRC=$SRC_DIR/linux-6.3.2_$ARCH
+BUILDROOT_SRC=$SRC_DIR/buildroot_$ARCH
+
+qemu-system-$ARCH \
     -kernel \
-    $LINUX_SRC/arch/x86_64/boot/bzImage \
+    $LINUX_SRC/arch/$ARCH/boot/bzImage \
     -boot c -m 2049M -hda \
     $BUILDROOT_SRC/output/images/rootfs.ext4 \
     -append "root=/dev/sda rw console=ttyS0,115200 acpi=off nokaslr" \

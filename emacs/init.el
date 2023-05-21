@@ -410,7 +410,7 @@
 ;; Byte compile everything (makes a noticeable difference
 ;; to the startup time, down to 1s from about 5s from executing
 ;; "emacs" in bash to ready-to-type in emacs.
-;;(byte-recompile-directory (expand-file-name user-emacs-directory) 0)
+(byte-recompile-directory (expand-file-name user-emacs-directory) 0)
 
 (use-package notmuch
   :ensure)
