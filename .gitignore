@@ -7,3 +7,6 @@ elpa/
 transient/
 *.elc
 .lsp*
+
+# Folder in which to place linux source tree and other source code
+src/
