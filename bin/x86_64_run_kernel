@@ -4,14 +4,16 @@
 # architecture
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-SRC_DIR=$SCRIPT_DIR/../source/
+SRC_DIR=$SCRIPT_DIR/../src/
 
 # Configure these locations
 LINUX_SRC=$SRC_DIR/linux-6.3.2
 BUILDROOT_SRC=$SRC_DIR/buildroot
 
-qemu-system-x86_6-kernel $LIUX_SRC/arch/x86_64/boot/bzImage \
-			 -boot c -m 2049M -hda \
-			 $BUILDROOT_SRC/output/images/rootfs.ext4 \
-			 -append "root=/dev/sda rw console=ttyS0,115200 \
-			 acpi=off nokaslr"   -serial stdio -display none
+qemu-system-x86_64 \
+    -kernel \
+    $LINUX_SRC/arch/x86_64/boot/bzImage \
+    -boot c -m 2049M -hda \
+    $BUILDROOT_SRC/output/images/rootfs.ext4 \
+    -append "root=/dev/sda rw console=ttyS0,115200 acpi=off nokaslr" \
+    -serial stdio -display none
