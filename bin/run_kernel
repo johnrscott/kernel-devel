@@ -23,5 +23,5 @@ qemu-system-$ARCH \
     $LINUX_SRC/arch/$ARCH/boot/bzImage \
     -boot c -m 2049M -hda \
     $BUILDROOT_SRC/output/images/rootfs.ext4 \
-    -append "root=/dev/sda rw console=ttyS0,115200 acpi=off nokaslr" \
+    -append "root=/dev/sda rw console=ttyS0,115200 acpi=off nokaslr init=/sbin/better_init" \
     -serial stdio -display none
