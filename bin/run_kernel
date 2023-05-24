@@ -11,8 +11,8 @@ BUILDROOT_SRC=$REPO_DIR/src/buildroot
 
 qemu-system-x86_64 \
     -kernel $REPO_DIR/root/boot/vmlinuz-6.3.2\
-    -boot c -m 2049M -hda \
-    $BUILDROOT_SRC/output/images/rootfs.ext4 \
+    -boot c -m 2049M \
+    -drive file=$BUILDROOT_SRC/output/images/rootfs.ext4,format=raw \
     -append "root=/dev/sda rw console=ttyS0,115200 acpi=off nokaslr" \
     -serial stdio -display none
 
