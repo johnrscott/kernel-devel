@@ -1,21 +1,8 @@
 #!/usr/bin/env bash
 
-# This script mounts a root filesystem image on the root/ folder
-# in this directory. The image is assumed to be located at
-#
-
-if [ $# -eq 0 ]
-  then
-      echo "You must pass the architecture; e.g. x86_64"
-      exit
-fi
-
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-SRC_DIR=$SCRIPT_DIR/../src/
-ROOT_DIR=$SCRIPT_DIR/../root/
+REPO_DIR=$SCRIPT_DIR/..
 
-ARCH=$1
-BUILDROOT_SRC=$SRC_DIR/buildroot_$ARCH
-ROOT_IMAGE=$BUILDROOT_SRC/output/images/rootfs.ext4
+BUILDROOT_SRC=$REPO_DIR/src/buildroot
 
-sudo mount $ROOT_IMAGE $ROOT_DIR
+sudo mount $BUILDROOT_SRC/output/images/rootfs.ext4 $REPO_DIR/root
