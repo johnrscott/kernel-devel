@@ -1,12 +1,16 @@
 # Kernel development environment for emacs
 
-Add the path to the `bin/` folder to your bashrc (or equivalent):
+Most of this repository will only work if the environment is properly sourced. From the root of the repository, run:
 
 ```bash
-export PATH=/path/to/kernel-devel/bin:$PATH
+. setup-env.sh
 ```
 
-This adds `kemacs` to the path, which is just emacs with a custom configuration located in the `emacs/` folder (which will not interfere with the normal user emacs configuration located in `~/.config/emacs/`). Note that `kemacs` will not work if there exists `~/.emacs` or `~/.emacs.d`, because these configurations cannot be overridden. Replace `~/.emacs` with `~/.config/emacs/init.el` (and delete ``
+That will add the `bin/` folder to your path, and provide a version of emacs (separate from your normal version if you have one) that is configured for kernel development. The configuration for emacs is located in the `emacs/` folder (which will not interfere with the normal user emacs configuration located in `~/.config/emacs/`). Note that this will not work if there exists `~/.emacs` or `~/.emacs.d`, because these configurations cannot be overridden. Replace `~/.emacs` with `~/.config/emacs/init.el` (and delete, or move, `.emacs.d`).
+
+## Directory conventions
+
+The `src/` directory will contain the linux kernel source tree, buildroot, gcc, and other tools that are required. Scripts in `bin/` refer to this directory for this purpose. Currently, the scripts refer to `src/linux-6.3.2`. Obtain it from 
 
 ## Building root
 
@@ -78,20 +82,32 @@ Make a build directory `src/binutils-2.40-build`, change into it, and configure 
 cd src/
 mkdir binutils-2.40-build
 cd binutils-2.40-build
-../binutils-2.40/configure --target=$TARGET --prefix="$PREFIX" --with-sysroot --disable-nls --disable-werror
+../binutils-2.40/configure --target=$TARGET \
+	--prefix="$PREFIX" --with-sysroot \
+	--disable-nls --disable-werror
 
 make -j8
 make install
 ```
 
-Obtain gcc from https://ftp.gnu.org/gnu/gcc/:
+Next, obtain gcc from https://ftp.gnu.org/gnu/gcc/:
 
 ```bash
 wget https://ftp.gnu.org/gnu/gcc/gcc-13.1.0/gcc-13.1.0.tar.xz
 tar xvf gcc-13.1.0.tar.xz
 ```
 
-Create a build directory
+Ensure that `$PREFIX` and `$TARGET` are set, and that `gcc_overlay/bin` is in the path. Create a build directory for gcc, configure, and build:
+
+```bash
+mkdir gcc-13.1.0-build
+cd gcc-13.1.0-build
+
+../gcc-13.1.0/configure --target=$TARGET \
+	--prefix="$PREFIX" --disable-multilib
+make -j8
+
+```
 
 ## Other
 

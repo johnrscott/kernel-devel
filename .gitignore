@@ -15,3 +15,5 @@ src/
 
 root_mount
 root_overlay
+gcc_overlay
+/.kern_ver

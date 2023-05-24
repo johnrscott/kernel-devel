@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Obtain a copy of the kernel version specified by the `kernel_version` command,
+# extract it, and put it in src/. Gets the kernel from https://www.kernel.org/.
+# Only works with kernels numbered 6.x.x (see hardcoded URL), and could easily
+# break if the URL changes. It's easy to fix.
+
+cd $(repo_dir)/src
+
+KERNEL=linux-$(kernel_version)
+KERNEL_TAR=$KERNEL.tar.xz
+URL=https://cdn.kernel.org/pub/linux/kernel/v6.x/$KERNEL_TAR
+
+if [ ! -f $KERNEL_TAR ]; then
+    wget $URL
+else
+    echo "There is already a file $KERNEL_TAR; using that"
+fi
+
+if [ ! -d $KERNEL ]; then
+    tar xvf $KERNEL_TAR
+else
+    echo "There is already a directory $KERNEL; aborting"
+fi

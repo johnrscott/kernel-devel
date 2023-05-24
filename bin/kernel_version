@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Get the current kernel version (used by scripts to find the right
+# directory name of the kernel source tree) Defaults to 6.3.2.
+
+if [ -f $(repo_dir)/.kern_ver ]; then
+    cat $(repo_dir)/.kern_ver
+else
+    echo 6.3.2
+fi
