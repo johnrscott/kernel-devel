@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# You need to have linux and buildroot for the same
-# architecture
+# Use this script to run the new linux kernel in qemu. You need to have build
+# an ext4 root filesystem image using buildroot first.
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 REPO_DIR=$SCRIPT_DIR/..

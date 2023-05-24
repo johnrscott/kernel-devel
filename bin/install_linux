@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# This script installs a built linux at the LINUX_SRC directory listed below
+# into the root_overlay folder at the root of this repository. Configure
+# buildroot to use this folder as a root overlay, and then remaking buildroot
+# will cause the contents to end up in the final root filesystem image.
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+REPO_DIR=$SCRIPT_DIR/..
+
+LINUX_SRC=$REPO_DIR/src/linux-6.3.2
+
+ROOT_OVERLAY=$REPO_DIR/root_overlay
+
+export ARCH=x86_64
+export INSTALL_MOD_PATH=$ROOT_OVERLAY
+export INSTALL_PATH=$ROOT_OVERLAY/boot
+export INSTALL_HDR_PATH=$ROOT_OVERLAY/usr
+
+mkdir -p $ROOT_OVERLAY/boot
+
+cd $LINUX_SRC
+make modules_install
+make install
+make headers_install 

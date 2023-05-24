@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-REPO_DIR=$SCRIPT_DIR/..
-
-BUILDROOT_SRC=$REPO_DIR/src/buildroot
-
-sudo mount $BUILDROOT_SRC/output/images/rootfs.ext4 $REPO_DIR/root
