@@ -25,7 +25,31 @@ sudo mkdir ../../root/boot
 sudo make headers_install ARCH=x86 INSTALL_HDR_PATH=../../root/usr
 ```
 
+Make a folder `root/boot/grub` and add
 
+```conf
+# Set the grub screen timeout. By setting to 0,
+# the top option will be immediately selected
+set timeout=2
+
+# Make a menu entry for the operating system
+menuentry linux {
+	  linux /boot/vmlinuz-6.3.2 root=/dev/sda rw console=ttyS0,115200 acpi=off nokaslr
+}
+```
+
+Next, package the whole root folder into an ISO image using
+
+```bash
+sudo grub-mkrescue root/ -o linux.iso
+```
+
+You can run the image using
+
+```bash
+# From root of repository
+qemu-system-x86_64 -cdrom linux.iso -hda src/buildroot/output/images/rootfs.ext4
+```
 
 ## Other
 

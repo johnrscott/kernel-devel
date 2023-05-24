@@ -12,3 +12,4 @@ transient/
 src/
 
 root/
+*.iso
