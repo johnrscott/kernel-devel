@@ -5,12 +5,8 @@
 # buildroot to use this folder as a root overlay, and then remaking buildroot
 # will cause the contents to end up in the final root filesystem image.
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-REPO_DIR=$SCRIPT_DIR/..
-
-LINUX_SRC=$REPO_DIR/src/linux-$(kernel_version)
-
-ROOT_OVERLAY=$REPO_DIR/linux_overlay
+LINUX_SRC=$(repo_root)/src/linux-$(kernel_version)
+ROOT_OVERLAY=$(repo_root)/linux_overlay
 
 export ARCH=x86_64
 export INSTALL_MOD_PATH=$ROOT_OVERLAY

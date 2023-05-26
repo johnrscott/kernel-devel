@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# This script finds the root location of this repository. It is used to find paths
+# to the linux source code and others.
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+REPO_ROOT=$(realpath $SCRIPT_DIR/..)
+
+echo $REPO_ROOT

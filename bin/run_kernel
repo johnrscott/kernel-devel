@@ -3,14 +3,11 @@
 # Use this script to run the new linux kernel in qemu. You need to have build
 # an ext4 root filesystem image using buildroot first.
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-REPO_DIR=$SCRIPT_DIR/..
-
-LINUX_SRC=$REPO_DIR/src/linux-6.3.2
-BUILDROOT_SRC=$REPO_DIR/src/buildroot
+LINUX_SRC=$(repo_root)/src/linux-$(kernel_version)
+BUILDROOT_SRC=$(repo_root)/src/buildroot
 
 qemu-system-x86_64 \
-    -kernel $REPO_DIR/root/boot/vmlinuz-6.3.2\
+    -kernel $(repo_root)/linux_overlay/boot/vmlinuz-$(kernel_version)\
     -boot c -m 2049M \
     -drive file=$BUILDROOT_SRC/output/images/rootfs.ext4,format=raw \
     -append "root=/dev/sda rw console=ttyS0,115200 acpi=off nokaslr" \
