@@ -8,9 +8,9 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 REPO_DIR=$SCRIPT_DIR/..
 
-LINUX_SRC=$REPO_DIR/src/linux-6.3.2
+LINUX_SRC=$REPO_DIR/src/linux-$(kernel_version)
 
-ROOT_OVERLAY=$REPO_DIR/root_overlay
+ROOT_OVERLAY=$REPO_DIR/linux_overlay
 
 export ARCH=x86_64
 export INSTALL_MOD_PATH=$ROOT_OVERLAY

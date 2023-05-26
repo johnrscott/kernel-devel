@@ -105,8 +105,9 @@ cd gcc-13.1.0-build
 
 ../gcc-13.1.0/configure --target=$TARGET \
 	--prefix="$PREFIX" --disable-multilib
-make -j8
 
+make -j8
+make install
 ```
 
 ## Other
