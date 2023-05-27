@@ -27,6 +27,23 @@ make menuconfig
 In *Target Architecture*, specify `x86_64`. In *Filesystem images*, choose *ext2/3/4 root filesystem* and select `ext4` as the variant. Save and exit. Build using
 
 ```bash
-#
+# 37m2.928s
 time make -j8
 ```
+
+## Building the kernel
+
+```bash
+cd src/linux-6.3.4
+make tinyconfig
+make menuconfig
+```
+
+Set the following configuration (
+
+- *64-bit kernel* (`64BIT`). 
+- *Enable support for printk* (`PRINTK`). *Enable TTY* (`TTY`). These two options are required to see boot messages when running qemu in graphical mode.
+- 
+
+Build time (`time make -j8`) with tinyconfig alone is 0m50.392s. 
+

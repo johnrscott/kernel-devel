@@ -19,3 +19,5 @@ export PS1="\[\e[43m\]KDEV\[\e[m\] $PS1"
 export PATH=$SCRIPT_DIR/bin:$SCRIPT_DIR/sysroot/bin/:$PATH
 
 echo "Kernel development environment enabled"
+
+alias cdlinux='cd $(repo_root)/src/linux-$(kernel_version)'

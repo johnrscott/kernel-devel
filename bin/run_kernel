@@ -6,9 +6,13 @@
 LINUX_SRC=$(repo_root)/src/linux-$(kernel_version)
 BUILDROOT_SRC=$(repo_root)/src/buildroot-$(buildroot_version)
 
+# -boot c : boot from the first hard disk
+# -m 2048M : use 2GiB memory
+# 
 qemu-system-x86_64 \
-    -kernel $(repo_root)/linux_overlay/boot/vmlinuz-$(kernel_version)\
-    -boot c -m 2049M \
+    -kernel $LINUX_SRC/arch/x86/boot/bzImage \
+    -boot c \
+    -m 2048M \
     -drive file=$BUILDROOT_SRC/output/images/rootfs.ext4,format=raw \
-    -append "root=/dev/sda rw console=ttyS0,115200 acpi=off nokaslr" \
-    -serial stdio -display none
+    #-append "root=/dev/sda rw console=ttyS0,115200 acpi=off nokaslr" \
+    #-serial stdio -display none
