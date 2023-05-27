@@ -16,6 +16,6 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 # html_node/emacs/Find-Init.html
 export XDG_CONFIG_HOME=$SCRIPT_DIR
 export PS1="\[\e[43m\]KDEV\[\e[m\] $PS1"
-export PATH=$SCRIPT_DIR/bin:$SCRIPT_DIR/gcc_overlay/bin/:$PATH
+export PATH=$SCRIPT_DIR/bin:$SCRIPT_DIR/sysroot/bin/:$PATH
 
 echo "Kernel development environment enabled"

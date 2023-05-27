@@ -3,5 +3,5 @@
 # Interactively set the kernel version. The result is saved in a file
 # and used in other scripts. 
 
-read -p "Type the new kernl version exactly like X.x.x: " KERN_VER
+read -p "Type the new kernel version exactly like x.x.x: " KERN_VER
 echo $KERN_VER > $(repo_dir)/.kern_ver

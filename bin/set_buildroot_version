@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Interactively set the buildroot version. The result is saved in a file
+# and used in other scripts. 
+
+read -p "Type the new buildroot version exactly like xxxx.xx.x: " BUILDROOT_VER
+echo $BUILDROOT_VER > $(repo_dir)/.buildroot_ver

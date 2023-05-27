@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Get the current kernel version (used by scripts to find the right
+# directory name of the kernel source tree) Defaults to 2023.02.1.
+
+if [ -f $(repo_dir)/.buildroot_ver ]; then
+    cat $(repo_dir)/.buildroot_ver
+else
+    echo 2023.02.1
+fi
