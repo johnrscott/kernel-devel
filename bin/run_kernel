@@ -14,5 +14,5 @@ qemu-system-x86_64 \
     -boot c \
     -m 2048M \
     -drive file=$BUILDROOT_SRC/output/images/rootfs.ext4,format=raw \
-    #-append "root=/dev/sda rw console=ttyS0,115200 acpi=off nokaslr" \
-    #-serial stdio -display none
+    -append "root=/dev/sda rw console=ttyS0,115200 acpi=off nokaslr" \
+    -serial stdio -display none
