@@ -110,6 +110,16 @@ make -j8
 make install
 ```
 
+## Compiling glibc
+
+The C library for GNU/Linux systems is glibc. Download a recent version from https://ftp.gnu.org/gnu/glibc/ and extract it in the source directory:
+
+```bash
+cd src/
+wget https://ftp.gnu.org/gnu/glibc/glibc-2.37.tar.xz
+tar xvf glibc-2.37.tar.xz
+```
+
 ## Other
 
 Extracting patchsets from notmuch: https://github.com/aaptel/notmuch-extract-patch/tree/master

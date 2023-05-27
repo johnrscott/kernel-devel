@@ -14,6 +14,5 @@ src/
 *.iso
 
 root_mount
-linux_overlay
-gcc_overlay
 /.kern_ver
+sysroot
