@@ -45,5 +45,15 @@ Set the following configuration (`configs/config-6.3.4-minimal`)
 - *Enable support for printk* (`PRINTK`). *Enable TTY* (`TTY`). These two options are required to see boot messages when running qemu in graphical mode.
 - *8250/16550 and compatible serial support* (`SERIAL_8520`), *Console on 8250/16550 and compatible serial port* (`SERIAL_8520_CONSOLE`). These options are required when passing `-serial stdio -display none` to qemu and using the linux kernel command line option `console=ttyS0,115200` to redirect qemu text output to the console.
 
-Build time (`time make -j8`) with tinyconfig alone is 0m50.392s. The full config build time for `config-6.3.4-minimal` is 0m56.558s. This boots with the `run_kernel` script to a kernel panic, because filesystem support for the ext4 buildroot image is missing.
+Build time (`time make -j8`) with tinyconfig alone is 0m50.392s. The full config build time for `config-6.3.4-minimal` is 0m56.558s. This boots with the `run_kernel` script to a kernel panic, because filesystem support for the ext4 buildroot image is missing. Modify the following config:
 
+- *Enable the block layer* (`CONFIG_BLOCK`). This enables the block device path in `mount_root()`.
+- Enable *The Extended 4 (ext4) filesystem* (`CONFIG_EXT4_FS`). Also enable debugging for ext4.
+
+QEMU emulates a particular computer system: the [i440f PCx](https://www.qemu.org/docs/master/system/i386/pc.html). This requires PCI and PIIX driver support, enabled by adding the following configuration options:
+
+- *PCI Support* (`CONFIG_PCI`)
+- *Serial ATA and Parallel ATA drivers (libata)* (`CONFIG_ATA`)
+- *Intel ESB, ICH, PIIX3, PIIX4 PATA/SATA support* (`CONFIG_ATA_PIIX`)
+
+At this point, QEMU should detect the harddrive (`QEMU DVD-ROM, 2.5+, max UDMA/100`) correctly.
