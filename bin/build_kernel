@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# Run after set_config to build the kernel. There are no command line
+# parameters.
+
+cd $(repo_dir)
+KERNEL=src/linux-$(kernel_version)
+CONFIG=$KERNEL/.config
+
+if [ ! -f $CONFIG ]; then
+    echo "Did not find a .config. Run set_config first (or make menuconfig)"
+else
+    cd $KERNEL
+    time make -j8    
+fi
+
