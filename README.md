@@ -8,6 +8,14 @@ Some script examples in this repository will only work if the environment is pro
 
 That will add the `bin/` folder to your path, and provide a version of emacs (separate from your normal version if you have one) that is configured for kernel development. The configuration for emacs is located in the `emacs/` folder (which will not interfere with the normal user emacs configuration located in `~/.config/emacs/`). Note that this will not work if there exists `~/.emacs` or `~/.emacs.d`, because these configurations cannot be overridden. Replace `~/.emacs` with `~/.config/emacs/init.el` (and delete, or move, `.emacs.d`).
 
+## Helpers
+
+Use `kernel_version` to see the version of the kernel which will be used, and `set_kernel_version` to set it. Then run `get_kernel` to download and unpack that version into `src/`. Configuring and building is still a manual process for now -- in addition, you need to build `buildroot`. However, when all that is done, `run_kernel` will run the currently selected `kernel_version` in QEMU. Make sure qemu is install first using:
+
+```bash
+sudo apt install 
+```
+
 ## Directory conventions
 
 The `src/` directory will contain the linux kernel source tree and buildroot.
@@ -55,5 +63,29 @@ QEMU emulates a particular computer system: the [i440f PCx](https://www.qemu.org
 - *PCI Support* (`CONFIG_PCI`)
 - *Serial ATA and Parallel ATA drivers (libata)* (`CONFIG_ATA`)
 - *Intel ESB, ICH, PIIX3, PIIX4 PATA/SATA support* (`CONFIG_ATA_PIIX`)
+- *SCSI disk support* (`CONFIG_BLOCK_DEV_SD`)
 
-At this point, QEMU should detect the harddrive (`QEMU DVD-ROM, 2.5+, max UDMA/100`) correctly.
+At this point, QEMU should detect the harddrive (`QEMU DVD-ROM, 2.5+, max UDMA/100`) correctly, and mount the root filesystem. This config is stored in `configs/config-6.3.4-qemu` However, there is still a kernel panic due to no working init; this is due to lack of ELF support (confirm by inspecting the return value of `search_binary_handler()` in `fs/exec.c`):
+
+- *CONFIG_BINFMT_ELF* (`CONFIG_BINFMT_ELF`)
+
+At this point, init will run. However, there is still support for the pseudo-filesystems `proc/` and `sys/` missing. Enable these as follows:
+
+- */proc file system support* (`CONFIG_PROC_FS`)
+- *sysfs file system support* (`CONFIG_SYSFS`)
+- *Maintain a devtmpfs filesystem to mount at /dev* (`CONFIG_DEVTMPFS`) and *Automount devtmpfs at /dev, after the kernel mounted the rootfs* (`CONFIG_DEVTMPFS_MOUNT`)
+
+This config is stored in `configs/config-6.3.4-sysfs`; up to this point, the compilation takes 1m35.674s. The `buildroot` init needs POSIX timers.
+
+- *Posix Clocks and timers* (`CONFIG_POSIX_TIMERS`)
+
+The config should now boot to a console (login username `root`, no password). The config is stored in `configs/config-6.3.4-console`. To use this configuration from clean, run the following commands:
+
+```bash
+set_kernel_version
+# type 6.3.4 and press enter
+get_kernel
+set_config console
+build_kernel
+run_kernel
+```

@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# Copies the configuration file configs/config-$(kernel_version)-{name}
+# to the currently selected kernel version source tree. {name} is passed
+# as a command line parameter to this script. 
+
+if [ ! $# -eq 1 ]; then
+    echo "You must pass the config name as a parameter"
+    exit 1
+fi
+
+cd $(repo_dir)
+KERNEL=src/linux-$(kernel_version)
+
+if [ ! -f $KERNEL ]; then
+    get_kernel
+fi
+
+CONFIG=configs/config-$(kernel_version)-$1
+if [ ! -f $CONFIG ]; then
+    echo "Config file $CONFIG does not exist"
+    echo ""
+    echo "Maybe you want one of these:"
+    ls -1 configs/
+    exit 1
+fi
+
+cp -v $CONFIG $KERNEL/.config

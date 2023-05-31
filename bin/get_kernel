@@ -5,6 +5,7 @@
 # Only works with kernels numbered 6.x.x (see hardcoded URL), and could easily
 # break if the URL changes. It's easy to fix.
 
+mkdir -p $(repo_dir)/src
 cd $(repo_dir)/src
 
 KERNEL=linux-$(kernel_version)
@@ -20,5 +21,5 @@ fi
 if [ ! -d $KERNEL ]; then
     tar xvf $KERNEL_TAR
 else
-    echo "There is already a directory $KERNEL; aborting"
+    echo "There is already a directory $KERNEL"
 fi
