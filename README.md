@@ -87,5 +87,7 @@ set_kernel_version
 get_kernel
 set_config console
 build_kernel
+
+# Build buildroot first before running the kernel (see above).
 run_kernel
 ```
