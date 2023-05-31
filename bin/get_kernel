@@ -19,7 +19,9 @@ else
 fi
 
 if [ ! -d $KERNEL ]; then
-    tar xvf $KERNEL_TAR
+    echo "Unpacking $KERNEL_TAR..."
+    tar xf $KERNEL_TAR
+    echo "All done. Run set_config or make menuconfig next."
 else
     echo "There is already a directory $KERNEL"
 fi
