@@ -51,7 +51,7 @@ Set the following configuration (`configs/config-6.3.4-minimal`)
 
 - *64-bit kernel* (`64BIT`). 
 - *Enable support for printk* (`PRINTK`). *Enable TTY* (`TTY`). These two options are required to see boot messages when running qemu in graphical mode.
-- *8250/16550 and compatible serial support* (`SERIAL_8520`), *Console on 8250/16550 and compatible serial port* (`SERIAL_8520_CONSOLE`). These options are required when passing `-serial stdio -display none` to qemu and using the linux kernel command line option `console=ttyS0,115200` to redirect qemu text output to the console.
+- *8250/16550 and compatible serial support* (`SERIAL_8250`), *Console on 8250/16550 and compatible serial port* (`SERIAL_8250_CONSOLE`). These options are required when passing `-serial stdio -display none` to qemu and using the linux kernel command line option `console=ttyS0,115200` to redirect qemu text output to the console.
 
 Build time (`time make -j8`) with tinyconfig alone is 0m50.392s. The full config build time for `config-6.3.4-minimal` is 0m56.558s. This boots with the `run_kernel` script to a kernel panic, because filesystem support for the ext4 buildroot image is missing. Modify the following config:
 
