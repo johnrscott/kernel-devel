@@ -180,6 +180,16 @@
   :hook (c-mode c++-mode python-mode)
   :commands lsp)
 
+;; CTAGS CONFIGURATION
+;;
+;; You may be interested in the following keybindings
+;;
+;;
+;; Use C-c s ? to view a list of keybindings.
+;;
+(use-package xcscope
+  :ensure)
+
 ;; LSP UI MODE CONFIGURATION
 ;;
 ;; You may be interested in the following keybindings:

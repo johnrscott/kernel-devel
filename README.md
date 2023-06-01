@@ -8,13 +8,33 @@ Some script examples in this repository will only work if the environment is pro
 
 That will add the `bin/` folder to your path, and provide a version of emacs (separate from your normal version if you have one) that is configured for kernel development. The configuration for emacs is located in the `emacs/` folder (which will not interfere with the normal user emacs configuration located in `~/.config/emacs/`). Note that this will not work if there exists `~/.emacs` or `~/.emacs.d`, because these configurations cannot be overridden. Replace `~/.emacs` with `~/.config/emacs/init.el` (and delete, or move, `.emacs.d`).
 
-## Helpers
+To use ctags for navigating the kernel source code, install cscope as follows:
 
-Use `kernel_version` to see the version of the kernel which will be used, and `set_kernel_version` to set it. Then run `get_kernel` to download and unpack that version into `src/`. Configuring and building is still a manual process for now -- in addition, you need to build `buildroot`. However, when all that is done, `run_kernel` will run the currently selected `kernel_version` in QEMU. Make sure qemu is install first using:
+```bash
+sudo apt install cscope
+```
+
+In the kernel source tree, run `make cscope` following by `make TAGS`. Emacs is already set up to use ctags. For example, you can run `C-c s s` to search for a symbol. Use `C-c s ?` to view the list of available commands. 
+
+Emacs is also set up to use LSP-mode, if you install clangd:
+
+```bash
+sudo apt install clangd-12
+```
+
+You need to build the kernel, and then run the script `./scripts/clang-tools/gen_compile_commands.py`. You do not need to use clang for this to work. To test, try `C-c l g g` to jump to the definition of the symbol at the cursor. Run `C-c l ?` for other LSP commands.
+
+## Helper scripts
+
+Once you have sourced `setup-env.sh`, you can run the commands in `bin/` from anywhere. 
+
+Use `kernel_version` to see the version of the kernel which will be used in other scripts, and `set_kernel_version` to set it. Then run `get_kernel` to download and unpack that version into `src/`. Run `menuconfig` to open the configuration for the current kernel. Use `build` to build the current kernel. You still need to download and build `buildroot` manually (see below). However, when all that is done, `run_kernel` will run the currently selected `kernel_version` in QEMU. Make sure qemu is installed first using:
 
 ```bash
 sudo apt install 
 ```
+
+## Using ctags 
 
 ## Directory conventions
 

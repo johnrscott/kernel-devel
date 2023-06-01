@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# Run this command to open menuconfig in the source tree of $(kernel_version).
+# If the kernel is not present, this script will download and unpack the
+# kernel first.
+
+cd $(repo_dir)
+KERNEL=src/linux-$(kernel_version)
+
+if [ ! -f $KERNEL ]; then
+    get_kernel
+fi
+
+cd $KERNEL
+make menuconfig
