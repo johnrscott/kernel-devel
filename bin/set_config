@@ -12,7 +12,7 @@ fi
 cd $(repo_dir)
 KERNEL=src/linux-$(kernel_version)
 
-if [ ! -f $KERNEL ]; then
+if [ ! -d $KERNEL ]; then
     get_kernel
 fi
 

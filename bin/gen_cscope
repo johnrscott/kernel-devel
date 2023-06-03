@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# Generates 
+
+cd $(repo_dir)
+KERNEL=src/linux-$(kernel_version)
+
+if [ ! -d $KERNEL ]; then
+    echo "Kernel $KERNEL not found. Run get_kernel."
+    exit 1
+fi
+
+cd $KERNEL
+echo "Making scope..."
+make cscope
+echo "Done"

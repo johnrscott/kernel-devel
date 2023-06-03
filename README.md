@@ -28,7 +28,7 @@ You need to build the kernel, and then run the script `./scripts/clang-tools/gen
 
 Once you have sourced `setup-env.sh`, you can run the commands in `bin/` from anywhere. 
 
-Use `kernel_version` to see the version of the kernel which will be used in other scripts, and `set_kernel_version` to set it. Then run `get_kernel` to download and unpack that version into `src/`. Run `menuconfig` to open the configuration for the current kernel. Use `build` to build the current kernel. You still need to download and build `buildroot` manually (see below). However, when all that is done, `run_kernel` will run the currently selected `kernel_version` in QEMU. Make sure qemu is installed first using:
+Use `kernel_version` to see the version of the kernel which will be used in other scripts, and `set_kernel_version` to set it. Then run `get_kernel` to download and unpack that version into `src/`. Run `menuconfig` to open the configuration for the current kernel. Use `build_kernel` to build the current kernel. You still need to download and build `buildroot` manually (see below). However, when all that is done, `run_kernel` will run the currently selected `kernel_version` in QEMU. Make sure qemu is installed first using:
 
 ```bash
 sudo apt install 

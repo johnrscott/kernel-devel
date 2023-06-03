@@ -188,7 +188,9 @@
 ;; Use C-c s ? to view a list of keybindings.
 ;;
 (use-package xcscope
-  :ensure)
+  :ensure
+  :config
+  (cscope-setup))
 
 ;; LSP UI MODE CONFIGURATION
 ;;
@@ -424,5 +426,3 @@
 
 (use-package notmuch
   :ensure)
-
-(load-file (expand-file-name "lisp/notmuch.el" user-emacs-directory))

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Use this script to install build dependencies (or at least see what they are)
+# on Ubuntu-like distributions
+
+echo "You might need to provide your root password for apt install"
+sudo apt-get install libncurses-dev \
+     gawk flex bison openssl libssl-dev \
+     dkms libelf-dev libudev-dev libpci-dev \
+     libiberty-dev autoconf llvm
