@@ -16,3 +16,4 @@ src/
 root_mount
 /.kern_ver
 sysroot
+pulse

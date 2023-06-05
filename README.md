@@ -8,7 +8,7 @@ Some script examples in this repository will only work if the environment is pro
 
 That will add the `bin/` folder to your path, and provide a version of emacs (separate from your normal version if you have one) that is configured for kernel development. The configuration for emacs is located in the `emacs/` folder (which will not interfere with the normal user emacs configuration located in `~/.config/emacs/`). Note that this will not work if there exists `~/.emacs` or `~/.emacs.d`, because these configurations cannot be overridden. Replace `~/.emacs` with `~/.config/emacs/init.el` (and delete, or move, `.emacs.d`).
 
-You can use the terminal (vterm) inside emacs for everything in this repository. Open emacs using by running `emacs` (after sourcing the `setup-env.sh` above). Then, you can open a terminal using `C-c t` (ctrl-c followed by t). Any time you want to send a line of code to execute in the terminal from any other buffer (e.g. from this readme), position the cursor anywhere on the line and run `C-<return>` (ctrl-enter).
+You can use the terminal (vterm) inside emacs for everything in this repository. Open emacs using by running `emacs` (after sourcing the `setup-env.sh` above). Then, you can open a terminal using `C-c t` (ctrl-c followed by t). Any time you want to send a line of code to execute in the terminal from any other buffer (e.g. from this readme), position the cursor anywhere on the line and run `C-<return>` (ctrl-enter). You can also highlight a group of lines and send them all to the terminal using `C-<return>`. Several other things (the menuconfig and qemu) can be run directly inside the emacs terminal as well.
 
 To use ctags for navigating the kernel source code, install cscope as follows:
 
@@ -33,7 +33,7 @@ Once you have sourced `setup-env.sh`, you can run the commands in `bin/` from an
 Use `kernel_version` to see the version of the kernel which will be used in other scripts, and `set_kernel_version` to set it. Then run `get_kernel` to download and unpack that version into `src/`. Run `menuconfig` to open the configuration for the current kernel. Use `build_kernel` to build the current kernel. You still need to download and build `buildroot` manually (see below). However, when all that is done, `run_kernel` will run the currently selected `kernel_version` in QEMU. Make sure qemu is installed first using:
 
 ```bash
-sudo apt install 
+sudo apt install qemu-system-x86
 ```
 
 ## Using ctags 
@@ -116,14 +116,33 @@ run_kernel
 
 ## linux-next
 
+The linux-next tree is a preview into the potential state of the kernel after the next merge window closes, as described in the [kernel documentation](https://docs.kernel.org/process/2.Process.html#next-trees). 
+
+You can view the current state of the next tree on the [official repository page](https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git). This shows recent changes and tags.
+
 The procedure for setting up linux-next is as follows (based the instructions [here](https://www.kernel.org/doc/man-pages/linux-next.html)):
 
 ```bash
-# Clone the mainline linux repository
+# Clone the mainline linux repository. This is the latest version of 
+# the linux development kernel, on which the linux-next changes will
+# be superimposed.
 cd $(repo_dir)/src/
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git 
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git linux-next
+cd linux-next
 
-cd linux
+# Add the linux-next remote, where the preview of upcoming kernel features
+# is stored. Download the changes (but do not merge anything). Also download
+# the tags. The branch is still set to master after this step
+git remote add linux-next  https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+git fetch linux-next
+git fetch --tags linux-next
 
+# View the next- tags. This shows the most recent tags. You can create
+# a new branch based on any of these
+git tag -l "next" | tail
 
+# You can make a new branch based on one of these tags as follows
+git checkout -b mybranch next-20230605
 ```
+
+
