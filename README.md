@@ -8,6 +8,8 @@ Some script examples in this repository will only work if the environment is pro
 
 That will add the `bin/` folder to your path, and provide a version of emacs (separate from your normal version if you have one) that is configured for kernel development. The configuration for emacs is located in the `emacs/` folder (which will not interfere with the normal user emacs configuration located in `~/.config/emacs/`). Note that this will not work if there exists `~/.emacs` or `~/.emacs.d`, because these configurations cannot be overridden. Replace `~/.emacs` with `~/.config/emacs/init.el` (and delete, or move, `.emacs.d`).
 
+You can use the terminal (vterm) inside emacs for everything in this repository. Open emacs using by running `emacs` (after sourcing the `setup-env.sh` above). Then, you can open a terminal using `C-c t` (ctrl-c followed by t). Any time you want to send a line of code to execute in the terminal from any other buffer (e.g. from this readme), position the cursor anywhere on the line and run `C-<return>` (ctrl-enter).
+
 To use ctags for navigating the kernel source code, install cscope as follows:
 
 ```bash
@@ -110,4 +112,18 @@ build_kernel
 
 # Build buildroot first before running the kernel (see above).
 run_kernel
+```
+
+## linux-next
+
+The procedure for setting up linux-next is as follows (based the instructions [here](https://www.kernel.org/doc/man-pages/linux-next.html)):
+
+```bash
+# Clone the mainline linux repository
+cd $(repo_dir)/src/
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git 
+
+cd linux
+
+
 ```
