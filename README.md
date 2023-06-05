@@ -145,4 +145,93 @@ git tag -l "next" | tail
 git checkout -b mybranch next-20230605
 ```
 
+The notes below are based on the `mybranch` created above.
 
+After make some changes to the branch, 
+
+
+## Email setup
+
+To set up the email client, install [offlineimap](https://www.offlineimap.org/) and [not much mail](https://notmuchmail.org/) as follows:
+
+```bash
+sudo apt install offlineimap3 notmuch
+```
+
+If you have a gmail account, make a configuration file `~/.offlineimaprc`, replacing the variables in braces as appropriate:
+
+```ini
+[general]
+accounts = gmailaccount
+ 
+[Account gmailaccount]
+localrepository = localgmail
+remoterepository = remotegmail
+ 
+[Repository localgmail]
+type = GmailMaildir
+localfolders = $HOME/mail/{your_email_addr}@gmail.com
+ 
+[Repository remotegmail]
+type = Gmail
+maxconnections=1
+remotehost = imap.gmail.com
+remoteuser = {your_email_addr}@gmail.com
+remotepass = {email_app_pass}
+ssl = yes
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+```
+
+The password `{email_app_pass}` is not your email password; it is an app password generated in your google settings. See [here](https://support.google.com/accounts/answer/185833?hl=en), or search for `google mail app password`. At the time I did it:
+
+1. Go to your google account page (not gmail)
+2. Navigate to Security, then 2-step verification, then app passwords
+3. Create a new app; set the app to Mail and the device to Custom.
+4. Click generate, and copy the password to the config file below.
+
+Synchronise the mail directory by running `offlineimap`. 
+
+Run `notmuch` to begin one-time configuration. Specify the mail directory. The configuration will be stored in `~/.notmuch-config`. Run `notmuch new` to synchronise new mail from `offlineimap`. 
+
+To sync your mailbox, run
+
+```bash
+offlineimap
+notmuch new
+```
+
+To open `notmuch` in emacs, run `M-x notmuch`.
+
+## Rust development
+
+Install `rustup` from the [official rust installation page](https://www.rust-lang.org/tools/install). Documentation about using rust in the kernel is provided [here](https://docs.kernel.org/rust/quick-start.html).
+
+
+As documented [here](https://rust-lang.github.io/rustup/overrides.html#directory-overrides), individual directories can be configured to use their own toolchains. Set up the kernels toolchain preference using:
+
+```bash
+cd $(repo_dir)/src/linux-next
+rustup override set $(scripts/min-tool-version.sh rustc)
+```
+
+Add the rust source code (for cross-compilation purposes) and install `bindgen` for the C bindings.
+
+```bash
+rustup component add rust-src
+cargo install --locked --version $(scripts/min-tool-version.sh bindgen) bindgen
+```
+
+Install `clang`, and confirm that the rust setup is working:
+
+```bash
+sudo apt install clang
+make LLVM=1 rustavailable
+```
+
+Copy the minimal configuration and enable the *Rust support* (`CONFIG_RUST`) option.
+
+```bash
+cp $(repo_dir)/configs/config-6.3.4-console .config
+make menuconfig
+make -j8
+```
