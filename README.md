@@ -235,3 +235,13 @@ cp $(repo_dir)/configs/config-6.3.4-console .config
 make menuconfig
 make -j8
 ```
+
+## Patches
+
+To create a patchset based on all the commits from a particular commit to `HEAD`, run
+
+```bash
+git format-patch -o patch/ {commit}
+```
+
+This will create a directory called `patch` and put `.patch` files in it, one per commit, formatted as patch emails. You can open one of these files in emacs and view it in diff mode. You can apply it manually using `C-c C-a`. Note that the patch must be located at the head of the kernel source tree for this to work -- not in the `patch/` directory.
