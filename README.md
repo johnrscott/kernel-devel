@@ -245,3 +245,9 @@ git format-patch -o patch/ {commit}
 ```
 
 This will create a directory called `patch` and put `.patch` files in it, one per commit, formatted as patch emails. You can open one of these files in emacs and view it in diff mode. You can apply it manually using `C-c C-a`. Note that the patch must be located at the head of the kernel source tree for this to work -- not in the `patch/` directory.
+
+You can can create a patch series in emacs using magit. Press `C-x g` to enter the magit buffer, then press `W c`. You will see a menu of arguments. Press `C-m o` to set the output directory (create the directory first). 
+
+Press `c` to create the patches; specify  an expression such as `HEAD~2..HEAD` as the `format range or commit`. 
+
+Press enter, and then navigate to the output directory to see the files. If you specify an option such as `C-m l`, you will be prompted to write a cover letter -- replace the section in the buffer labelled `*** BLURB HERE ***`. 
