@@ -17,3 +17,5 @@ root_mount
 /.kern_ver
 sysroot
 pulse
+mail
+offlineimaprc
