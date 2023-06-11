@@ -1,0 +1,130 @@
+From 691435b0b5f8b61092aa2142fb5f77ecad5bc772 Mon Sep 17 00:00:00 2001
+From: John Scott <johnrscott0@gmail.com>
+Date: Sun, 11 Jun 2023 17:31:10 +0100
+Subject: [PATCH 11/11] Converted a few more functions to rust
+
+---
+ lib/rbtree.c       | 15 +++--------
+ lib/rbtree_rust.rs | 64 +++++++++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 65 insertions(+), 14 deletions(-)
+
+diff --git a/lib/rbtree.c b/lib/rbtree.c
+index f8d03ef03a9e..f9a5ba99c6aa 100644
+--- a/lib/rbtree.c
++++ b/lib/rbtree.c
+@@ -56,24 +56,17 @@
+  * pointers.
+  */
+ 
+-
+-extern inline void rb_set_black(struct rb_node *rb);
+-extern inline struct rb_node *rb_red_parent(struct rb_node *red);
++extern void rb_set_black(struct rb_node *rb);
++extern struct rb_node *rb_red_parent(struct rb_node *red);
+ 
+ /*
+  * Helper function for rotations:
+  * - old's parent and color get assigned to new
+  * - old gets assigned new as a parent and 'color' as a color.
+  */
+-static inline void
++extern void
+ __rb_rotate_set_parents(struct rb_node *old, struct rb_node *new,
+-			struct rb_root *root, int color)
+-{
+-	struct rb_node *parent = rb_parent(old);
+-	new->__rb_parent_color = old->__rb_parent_color;
+-	rb_set_parent_color(old, new, color);
+-	__rb_change_child(old, new, parent, root);
+-}
++			struct rb_root *root, int color);
+ 
+ static __always_inline void
+ __rb_insert(struct rb_node *node, struct rb_root *root,
+diff --git a/lib/rbtree_rust.rs b/lib/rbtree_rust.rs
+index efec6b9d21e5..7c552ea61fdb 100644
+--- a/lib/rbtree_rust.rs
++++ b/lib/rbtree_rust.rs
+@@ -1,18 +1,76 @@
+-use kernel::bindings::rb_node;
++use kernel::bindings::{rb_node, rb_root};
+ 
+ const RB_RED: u64 = 0;
+ const RB_BLACK: u64 = 1;
+ 
++/// Set a node to black by setting bits 0 and 1 of the
++/// __rb_parent_color field to 1
+ #[no_mangle]
+ pub fn rb_set_black(rb: *mut rb_node) {
+     unsafe {
+-	(*rb).__rb_parent_color += RB_BLACK;
++        (*rb).__rb_parent_color += RB_BLACK;
+     }
+ }
+ 
++/// When the parent is red, the __rb_parent_color has 0 in
++/// the color bits (position 0 and 1).
+ #[no_mangle]
+ pub fn rb_red_parent(red: *mut rb_node) -> *mut rb_node {
+     unsafe {
+-	return (*red).__rb_parent_color as *mut rb_node;
++        return (*red).__rb_parent_color as *mut rb_node;
+     }
+ }
++
++/// The pointer to the parent is stored in the __rb_parent_color
++/// field with bits 0 and 1 masked to 0 (those bits store the color).
++/// As a result, rb_nodes are always 4-byte aligned.
++fn rb_parent(node: *mut rb_node) -> *mut rb_node {
++    unsafe { ((*node).__rb_parent_color & !3) as *mut rb_node }
++}
++
++/// Set the parent/color field of rb to point to the parent p
++/// (assume 4-byte aligned).
++fn rb_set_parent_color(rb: *mut rb_node, p: *mut rb_node, color: u64) {
++    unsafe {
++	(*rb).__rb_parent_color = p as u64 + color;
++    }
++}
++
++fn __rb_change_child(old: *mut rb_node, new: *mut rb_node,
++		     parent: *mut rb_node, root: *mut rb_root)
++{
++    unsafe {
++	if parent != (0 as *mut rb_node) {
++	    if (*parent).rb_left == old {
++		// WRITE_ONCE
++		(*parent).rb_left = new;
++	    } else {
++		// WRITE_ONCE
++		(*parent).rb_right = new;
++	    }
++	} else {
++	    // WRITE_ONCE
++	    (*root).rb_node = new;
++	}
++    }
++}
++
++///
++/// Helper function for rotations:
++/// - old's parent and color get assigned to new
++/// - old gets assigned new as a parent and 'color' as a color.
++///
++#[no_mangle]
++pub fn __rb_rotate_set_parents(
++    old: *mut rb_node,
++    new: *mut rb_node,
++    root: *mut rb_root,
++    color: u64,
++) {
++    let parent = rb_parent(old);
++    unsafe {
++	(*new).__rb_parent_color = (*old).__rb_parent_color;
++    }
++    rb_set_parent_color(old, new, color);
++    __rb_change_child(old, new, parent, root);
++}
+-- 
+2.34.1
+

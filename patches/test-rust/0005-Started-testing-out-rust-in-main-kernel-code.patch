@@ -1,0 +1,36 @@
+From d9c8065266b4c4011520349710f0538e4ddf3a5e Mon Sep 17 00:00:00 2001
+From: John Scott <johnrscott0@gmail.com>
+Date: Sun, 11 Jun 2023 14:54:04 +0100
+Subject: [PATCH 05/11] Started testing out rust in main kernel code
+
+---
+ lib/Makefile       | 2 +-
+ lib/rbtree_rust.rs | 3 +++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+ create mode 100644 lib/rbtree_rust.rs
+
+diff --git a/lib/Makefile b/lib/Makefile
+index 42d307ade225..ea22e483be41 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -28,7 +28,7 @@ CFLAGS_string.o += -fno-stack-protector
+ endif
+ 
+ lib-y := ctype.o string.o vsprintf.o cmdline.o \
+-	 rbtree.o radix-tree.o timerqueue.o xarray.o \
++	 rbtree.o rbtree_rust.o radix-tree.o timerqueue.o xarray.o \
+ 	 maple_tree.o idr.o extable.o irq_regs.o argv_split.o \
+ 	 flex_proportions.o ratelimit.o \
+ 	 is_single_threaded.o plist.o decompress.o kobject_uevent.o \
+diff --git a/lib/rbtree_rust.rs b/lib/rbtree_rust.rs
+new file mode 100644
+index 000000000000..0b383bca4c17
+--- /dev/null
++++ b/lib/rbtree_rust.rs
+@@ -0,0 +1,3 @@
++fn foo() -> i32 {
++    16
++}
+-- 
+2.34.1
+

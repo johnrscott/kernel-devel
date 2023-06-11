@@ -1,0 +1,42 @@
+From 804869b496cc11f5a997e3e713bbc3813b2d215a Mon Sep 17 00:00:00 2001
+From: John Scott <johnrscott0@gmail.com>
+Date: Sun, 11 Jun 2023 15:27:27 +0100
+Subject: [PATCH 08/11] Fixed the linking -- now the kernel builds (but doesn't
+ work)
+
+---
+ lib/rbtree.c       | 2 ++
+ lib/rbtree_rust.rs | 7 ++++---
+ 2 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/lib/rbtree.c b/lib/rbtree.c
+index 0ab7d5a03c00..ca7468b4c11a 100644
+--- a/lib/rbtree.c
++++ b/lib/rbtree.c
+@@ -56,6 +56,8 @@
+  * pointers.
+  */
+ 
++
++static inline void rb_set_black(struct rb_node *rb);
+ /*
+ static inline void rb_set_black(struct rb_node *rb)
+ {
+diff --git a/lib/rbtree_rust.rs b/lib/rbtree_rust.rs
+index adee7bcd482f..515afefb5218 100644
+--- a/lib/rbtree_rust.rs
++++ b/lib/rbtree_rust.rs
+@@ -1,6 +1,7 @@
+ use kernel::prelude::*;
++use kernel::bindings::rb_node;
+ 
+-
+-fn foo() -> i32 {
+-    16
++#[no_mangle]
++pub fn rb_set_black(rb: *mut rb_node) {
++    //rb->__rb_parent_color += RB_BLACK;
+ }
+-- 
+2.34.1
+

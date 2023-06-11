@@ -1,0 +1,24 @@
+From 57c79fdf3f156708c1b0d277b4ee8bf6d3070468 Mon Sep 17 00:00:00 2001
+From: John Scott <johnrscott0@gmail.com>
+Date: Wed, 7 Jun 2023 21:43:16 +0100
+Subject: [PATCH 01/11] After applying the patch
+
+---
+ samples/rust/rust_minimal.rs | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/samples/rust/rust_minimal.rs b/samples/rust/rust_minimal.rs
+index dc05f4bbe27e..890a22893db9 100644
+--- a/samples/rust/rust_minimal.rs
++++ b/samples/rust/rust_minimal.rs
+@@ -21,6 +21,7 @@ fn init(_module: &'static ThisModule) -> Result<Self> {
+         pr_info!("Rust minimal sample (init)\n");
+         pr_info!("Am I built-in? {}\n", !cfg!(MODULE));
+ 
++	/// This is a test change
+         let mut numbers = Vec::new();
+         numbers.try_push(72)?;
+         numbers.try_push(108)?;
+-- 
+2.34.1
+

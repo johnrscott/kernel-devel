@@ -1,0 +1,63 @@
+From d005b75694c767c147915454ddd5126ef46c7dcd Mon Sep 17 00:00:00 2001
+From: John Scott <johnrscott0@gmail.com>
+Date: Sun, 11 Jun 2023 15:52:37 +0100
+Subject: [PATCH 10/11] Converted another function to rust
+
+---
+ lib/rbtree.c       | 14 ++------------
+ lib/rbtree_rust.rs | 13 +++++++++++--
+ 2 files changed, 13 insertions(+), 14 deletions(-)
+
+diff --git a/lib/rbtree.c b/lib/rbtree.c
+index ca7468b4c11a..f8d03ef03a9e 100644
+--- a/lib/rbtree.c
++++ b/lib/rbtree.c
+@@ -57,18 +57,8 @@
+  */
+ 
+ 
+-static inline void rb_set_black(struct rb_node *rb);
+-/*
+-static inline void rb_set_black(struct rb_node *rb)
+-{
+-	rb->__rb_parent_color += RB_BLACK;
+-}
+-*/
+-
+-static inline struct rb_node *rb_red_parent(struct rb_node *red)
+-{
+-	return (struct rb_node *)red->__rb_parent_color;
+-}
++extern inline void rb_set_black(struct rb_node *rb);
++extern inline struct rb_node *rb_red_parent(struct rb_node *red);
+ 
+ /*
+  * Helper function for rotations:
+diff --git a/lib/rbtree_rust.rs b/lib/rbtree_rust.rs
+index 522dea766a4c..efec6b9d21e5 100644
+--- a/lib/rbtree_rust.rs
++++ b/lib/rbtree_rust.rs
+@@ -1,9 +1,18 @@
+-use kernel::prelude::*;
+ use kernel::bindings::rb_node;
+ 
++const RB_RED: u64 = 0;
++const RB_BLACK: u64 = 1;
++
+ #[no_mangle]
+ pub fn rb_set_black(rb: *mut rb_node) {
+     unsafe {
+-	(*rb).__rb_parent_color += 1;
++	(*rb).__rb_parent_color += RB_BLACK;
++    }
++}
++
++#[no_mangle]
++pub fn rb_red_parent(red: *mut rb_node) -> *mut rb_node {
++    unsafe {
++	return (*red).__rb_parent_color as *mut rb_node;
+     }
+ }
+-- 
+2.34.1
+

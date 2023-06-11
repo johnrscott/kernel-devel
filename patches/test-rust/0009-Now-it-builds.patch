@@ -1,0 +1,25 @@
+From e52dc6e31dcceb21dd7896570f4b54c5cd6f83dc Mon Sep 17 00:00:00 2001
+From: John Scott <johnrscott0@gmail.com>
+Date: Sun, 11 Jun 2023 15:32:59 +0100
+Subject: [PATCH 09/11] Now it builds
+
+---
+ lib/rbtree_rust.rs | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/lib/rbtree_rust.rs b/lib/rbtree_rust.rs
+index 515afefb5218..522dea766a4c 100644
+--- a/lib/rbtree_rust.rs
++++ b/lib/rbtree_rust.rs
+@@ -3,5 +3,7 @@
+ 
+ #[no_mangle]
+ pub fn rb_set_black(rb: *mut rb_node) {
+-    //rb->__rb_parent_color += RB_BLACK;
++    unsafe {
++	(*rb).__rb_parent_color += 1;
++    }
+ }
+-- 
+2.34.1
+

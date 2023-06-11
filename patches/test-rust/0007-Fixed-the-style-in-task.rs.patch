@@ -1,0 +1,197 @@
+From f876924525cab2b6d2ac8a86ba3777cc463124d5 Mon Sep 17 00:00:00 2001
+From: John Scott <johnrscott0@gmail.com>
+Date: Sun, 11 Jun 2023 15:13:01 +0100
+Subject: [PATCH 07/11] Fixed the style in task.rs
+
+---
+ lib/rbtree.c        |  2 ++
+ lib/rbtree_rust.rs  |  1 +
+ rust/kernel/task.rs | 72 ++++++++++++++++++++++++++-------------------
+ 3 files changed, 44 insertions(+), 31 deletions(-)
+
+diff --git a/lib/rbtree.c b/lib/rbtree.c
+index 5114eda6309c..0ab7d5a03c00 100644
+--- a/lib/rbtree.c
++++ b/lib/rbtree.c
+@@ -56,10 +56,12 @@
+  * pointers.
+  */
+ 
++/*
+ static inline void rb_set_black(struct rb_node *rb)
+ {
+ 	rb->__rb_parent_color += RB_BLACK;
+ }
++*/
+ 
+ static inline struct rb_node *rb_red_parent(struct rb_node *red)
+ {
+diff --git a/lib/rbtree_rust.rs b/lib/rbtree_rust.rs
+index 9f5566ed244e..adee7bcd482f 100644
+--- a/lib/rbtree_rust.rs
++++ b/lib/rbtree_rust.rs
+@@ -1,5 +1,6 @@
+ use kernel::prelude::*;
+ 
++
+ fn foo() -> i32 {
+     16
+ }
+diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+index 7eda15e5f1b3..ba74d703186c 100644
+--- a/rust/kernel/task.rs
++++ b/rust/kernel/task.rs
+@@ -11,8 +11,8 @@
+ #[macro_export]
+ macro_rules! current {
+     () => {
+-        // SAFETY: Deref + addr-of below create a temporary `TaskRef` that cannot outlive the
+-        // caller.
++        // SAFETY: Deref + addr-of below create a temporary `TaskRef` that
++        // cannot outlive the caller.
+         unsafe { &*$crate::task::Task::current() }
+     };
+ }
+@@ -23,13 +23,14 @@ macro_rules! current {
+ ///
+ /// All instances are valid tasks created by the C portion of the kernel.
+ ///
+-/// Instances of this type are always ref-counted, that is, a call to `get_task_struct` ensures
+-/// that the allocation remains valid at least until the matching call to `put_task_struct`.
++/// Instances of this type are always ref-counted, that is, a call to
++/// `get_task_struct` ensures that the allocation remains valid at least until
++/// the matching call to `put_task_struct`.
+ ///
+ /// # Examples
+ ///
+-/// The following is an example of getting the PID of the current thread with zero additional cost
+-/// when compared to the C version:
++/// The following is an example of getting the PID of the current thread with
++/// zero additional cost when compared to the C version:
+ ///
+ /// ```
+ /// let pid = current!().pid();
+@@ -41,8 +42,9 @@ macro_rules! current {
+ /// let pid = current!().group_leader().pid();
+ /// ```
+ ///
+-/// Getting the current task and storing it in some struct. The reference count is automatically
+-/// incremented when creating `State` and decremented when it is dropped:
++/// Getting the current task and storing it in some struct. The reference count
++/// is automatically incremented when creating `State` and decremented when it
++/// is dropped:
+ ///
+ /// ```
+ /// use kernel::{task::Task, types::ARef};
+@@ -64,15 +66,18 @@ macro_rules! current {
+ #[repr(transparent)]
+ pub struct Task(pub(crate) Opaque<bindings::task_struct>);
+ 
+-// SAFETY: By design, the only way to access a `Task` is via the `current` function or via an
+-// `ARef<Task>` obtained through the `AlwaysRefCounted` impl. This means that the only situation in
+-// which a `Task` can be accessed mutably is when the refcount drops to zero and the destructor
+-// runs. It is safe for that to happen on any thread, so it is ok for this type to be `Send`.
++// SAFETY: By design, the only way to access a `Task` is via the `current`
++// function or via an `ARef<Task>` obtained through the `AlwaysRefCounted`
++// impl. This means that the only situation in which a `Task` can be accessed
++// mutably is when the refcount drops to zero and the destructor runs. It is
++// safe for that to happen on any thread, so it is ok for this type to be
++// `Send`.
+ unsafe impl Send for Task {}
+ 
+-// SAFETY: It's OK to access `Task` through shared references from other threads because we're
+-// either accessing properties that don't change (e.g., `pid`, `group_leader`) or that are properly
+-// synchronised by C code (e.g., `signal_pending`).
++// SAFETY: It's OK to access `Task` through shared references from other threads
++// because we're either accessing properties that don't change (e.g., `pid`,
++// `group_leader`) or that are properly synchronised by C code (e.g.,
++// `signal_pending`).
+ unsafe impl Sync for Task {}
+ 
+ /// The type of process identifiers (PIDs).
+@@ -86,7 +91,8 @@ impl Task {
+     ///
+     /// # Safety
+     ///
+-    /// Callers must ensure that the returned object doesn't outlive the current task/thread.
++    /// Callers must ensure that the returned object doesn't outlive the current
++    /// task/thread.
+     pub unsafe fn current() -> impl Deref<Target = Task> {
+         struct TaskRef<'a> {
+             task: &'a Task,
+@@ -105,9 +111,10 @@ fn deref(&self) -> &Self::Target {
+         let ptr = unsafe { bindings::get_current() };
+ 
+         TaskRef {
+-            // SAFETY: If the current thread is still running, the current task is valid. Given
+-            // that `TaskRef` is not `Send`, we know it cannot be transferred to another thread
+-            // (where it could potentially outlive the caller).
++            // SAFETY: If the current thread is still running, the current task
++            // is valid. Given that `TaskRef` is not `Send`, we know it cannot
++            // be transferred to another thread (where it could potentially
++            // outlive the caller).
+             task: unsafe { &*ptr.cast() },
+             _not_send: PhantomData,
+         }
+@@ -115,20 +122,21 @@ fn deref(&self) -> &Self::Target {
+ 
+     /// Returns the group leader of the given task.
+     pub fn group_leader(&self) -> &Task {
+-        // SAFETY: By the type invariant, we know that `self.0` is a valid task. Valid tasks always
+-        // have a valid group_leader.
++        // SAFETY: By the type invariant, we know that `self.0` is a valid
++        // task. Valid tasks always have a valid group_leader.
+         let ptr = unsafe { *ptr::addr_of!((*self.0.get()).group_leader) };
+ 
+-        // SAFETY: The lifetime of the returned task reference is tied to the lifetime of `self`,
+-        // and given that a task has a reference to its group leader, we know it must be valid for
+-        // the lifetime of the returned task reference.
++        // SAFETY: The lifetime of the returned task reference is tied to the
++        // lifetime of `self`, and given that a task has a reference to its
++        // group leader, we know it must be valid for the lifetime of the
++        // returned task reference.
+         unsafe { &*ptr.cast() }
+     }
+ 
+     /// Returns the PID of the given task.
+     pub fn pid(&self) -> Pid {
+-        // SAFETY: By the type invariant, we know that `self.0` is a valid task. Valid tasks always
+-        // have a valid pid.
++        // SAFETY: By the type invariant, we know that `self.0` is a valid
++        // task. Valid tasks always have a valid pid.
+         unsafe { *ptr::addr_of!((*self.0.get()).pid) }
+     }
+ 
+@@ -140,9 +148,9 @@ pub fn signal_pending(&self) -> bool {
+ 
+     /// Wakes up the task.
+     pub fn wake_up(&self) {
+-        // SAFETY: By the type invariant, we know that `self.0.get()` is non-null and valid.
+-        // And `wake_up_process` is safe to be called for any valid task, even if the task is
+-        // running.
++        // SAFETY: By the type invariant, we know that `self.0.get()` is
++        // non-null and valid.  And `wake_up_process` is safe to be called for
++        // any valid task, even if the task is running.
+         unsafe { bindings::wake_up_process(self.0.get()) };
+     }
+ }
+@@ -150,12 +158,14 @@ pub fn wake_up(&self) {
+ // SAFETY: The type invariants guarantee that `Task` is always ref-counted.
+ unsafe impl crate::types::AlwaysRefCounted for Task {
+     fn inc_ref(&self) {
+-        // SAFETY: The existence of a shared reference means that the refcount is nonzero.
++        // SAFETY: The existence of a shared reference means that the refcount
++        // is nonzero.
+         unsafe { bindings::get_task_struct(self.0.get()) };
+     }
+ 
+     unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
+-        // SAFETY: The safety requirements guarantee that the refcount is nonzero.
++        // SAFETY: The safety requirements guarantee that the refcount is
++        // nonzero.
+         unsafe { bindings::put_task_struct(obj.cast().as_ptr()) }
+     }
+ }
+-- 
+2.34.1
+

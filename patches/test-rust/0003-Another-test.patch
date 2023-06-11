@@ -1,0 +1,25 @@
+From 12fc0b2db6f4aa16676ec0644974050607c352fe Mon Sep 17 00:00:00 2001
+From: John Scott <johnrscott0@gmail.com>
+Date: Wed, 7 Jun 2023 22:04:08 +0100
+Subject: [PATCH 03/11] Another test
+
+Signed-off-by: John Scott <johnrscott0@gmail.com>
+---
+ samples/rust/rust_minimal.rs | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/samples/rust/rust_minimal.rs b/samples/rust/rust_minimal.rs
+index 15e398689503..2ff11d609d12 100644
+--- a/samples/rust/rust_minimal.rs
++++ b/samples/rust/rust_minimal.rs
+@@ -22,6 +22,7 @@ fn init(_module: &'static ThisModule) -> Result<Self> {
+         pr_info!("Am I built-in? {}\n", !cfg!(MODULE));
+ 
+ 	/// This is a test change -- other changes
++	/// Even more changes
+         let mut numbers = Vec::new();
+         numbers.try_push(72)?;
+         numbers.try_push(108)?;
+-- 
+2.34.1
+

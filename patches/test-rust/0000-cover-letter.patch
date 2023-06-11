@@ -1,0 +1,30 @@
+From 691435b0b5f8b61092aa2142fb5f77ecad5bc772 Mon Sep 17 00:00:00 2001
+From: John Scott <johnrscott0@gmail.com>
+Date: Sun, 11 Jun 2023 17:37:40 +0100
+Subject: [PATCH 00/11] *** SUBJECT HERE ***
+
+Trying out rust in the linux kernel tree. Don't apply it!
+
+John Scott (11):
+  After applying the patch
+  More changes
+  Another test
+  Tested patch application
+  Started testing out rust in main kernel code
+  Rust code in the lib/ tree builds with the kernel prelude
+  Fixed the style in task.rs
+  Fixed the linking -- now the kernel builds (but doesn't work)
+  Now it builds
+  Converted another function to rust
+  Converted a few more functions to rust
+
+ lib/Makefile        |  2 +-
+ lib/rbtree.c        | 21 +++----------
+ lib/rbtree_rust.rs  | 76 +++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/task.rs | 72 ++++++++++++++++++++++++------------------
+ 4 files changed, 122 insertions(+), 49 deletions(-)
+ create mode 100644 lib/rbtree_rust.rs
+
+-- 
+2.34.1
+
