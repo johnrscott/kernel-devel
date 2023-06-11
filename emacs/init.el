@@ -391,7 +391,7 @@
 (use-package flyspell
   :ensure
   :hook ((LaTeX-mode)
-	 (text-mode)
+	 (text-mode . flyspell-mode)
 	 (prog-mode . flyspell-prog-mode)))
 
 
@@ -424,5 +424,7 @@
 ;; "emacs" in bash to ready-to-type in emacs.
 ;;(byte-recompile-directory (expand-file-name user-emacs-directory) 0)
 
-(use-package notmuch
-  :ensure)
+;; (use-package notmuch
+;;   :ensure)
+
+

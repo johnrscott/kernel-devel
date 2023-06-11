@@ -149,8 +149,11 @@ The notes below are based on the `mybranch` created above.
 
 After make some changes to the branch, 
 
-
 ## Email setup
+
+
+
+## Email setup 2
 
 To set up the email client, install [offlineimap](https://www.offlineimap.org/) and [not much mail](https://notmuchmail.org/) as follows:
 

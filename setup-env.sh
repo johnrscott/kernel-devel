@@ -18,6 +18,9 @@ export XDG_CONFIG_HOME=$SCRIPT_DIR
 export PS1="\[\e[43m\]KDEV\[\e[m\] $PS1"
 export PATH=$SCRIPT_DIR/bin:$SCRIPT_DIR/sysroot/bin/:$PATH
 
+# See man git-config
+export GIT_CONFIG_GLOBAL=$SCRIPT_DIR/gitconfig
+
 echo "Kernel development environment enabled"
 
 alias cdlinux='cd $(repo_root)/src/linux-$(kernel_version)'
