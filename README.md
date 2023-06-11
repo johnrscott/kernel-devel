@@ -236,6 +236,18 @@ make menuconfig
 make -j8
 ```
 
+### Rust in the main kernel tree
+
+You can add rust code in the main kernel tree (for example, in folders like `lib/` or `kernel/`) by making a new file `filename.rs` in the folder, and adding an entry `filename.o` to the `obj-y` entry (or equivalent variable) in the `Makefile` in that folder. The build system will recognised the `.rs` extension and build the file with rustc. You must include the kernel prelude; here is a simple example:
+
+```rust
+use kernel::prelude::*;
+
+fn foo() -> i32 {
+    16
+}
+```
+
 ## Patches
 
 To create a patchset based on all the commits from a particular commit to `HEAD`, run
@@ -251,3 +263,5 @@ You can can create a patch series in emacs using magit. Press `C-x g` to enter t
 Press `c` to create the patches; specify  an expression such as `HEAD~2..HEAD` as the `format range or commit`. 
 
 Press enter, and then navigate to the output directory to see the files. If you specify an option such as `C-m l`, you will be prompted to write a cover letter -- replace the section in the buffer labelled `*** BLURB HERE ***`. 
+
+If you accidentally try to push (pressing `P p`), you won't be able to because there is no remote URL by default. 
