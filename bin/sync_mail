@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-# Read new mail into the local maildir, and synchronise notmuch.
-
-cd $(repo_dir)
-
