@@ -265,3 +265,17 @@ Press `c` to create the patches; specify  an expression such as `HEAD~2..HEAD` a
 Press enter, and then navigate to the output directory to see the files. If you specify an option such as `C-m l`, you will be prompted to write a cover letter -- replace the section in the buffer labelled `*** BLURB HERE ***`. 
 
 If you accidentally try to push (pressing `P p`), you won't be able to because there is no remote URL by default. 
+
+### Applying patches
+
+If the tree to be patched is not a git repository, use `patch`. To apply a single patch, change into the kernel source tree and run:
+
+‍‍‍```bash
+patch -p1 < path/to/0001-something.patch
+```
+
+If the tree is a git repository, use `git` instead:
+
+```bash
+git am path/to/0001-something.patch
+```
