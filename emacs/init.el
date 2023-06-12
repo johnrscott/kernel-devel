@@ -424,7 +424,11 @@
 ;; "emacs" in bash to ready-to-type in emacs.
 ;;(byte-recompile-directory (expand-file-name user-emacs-directory) 0)
 
-;; (use-package notmuch
-;;   :ensure)
-
-
+;; https://github.com/radian-software/straight.el/issues/491
+(use-package mu4e
+  :straight ( :host github 
+              :repo "djcb/mu"  
+              :branch "master"
+              :files ("mu4e/*")   
+              :pre-build (("./autogen.sh") ("make"))) 
+  :custom   (mu4e-mu-binary (expand-file-name "mu/mu" (straight--repos-dir "mu")))) 
