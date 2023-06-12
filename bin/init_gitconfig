@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# One-time git configuration. Configuration will be stored to the kernel
+# development environment's global git configuration, and will not interfere
+# with you main git configuration in ~/.gitconfig.
+
+# see man git-config
+if [ -f $GIT_CONFIG_GLOBAL ]; then
+    echo "Git has already been configured. Exiting"
+    echo "Done. To reset git configuration, delete $GIT_CONFIG_GLOBAL"
+    exit
+fi
+
+echo "Starting one-time git configuration"
+read -p "Full name (for git commits): " FULL_NAME
+read -p "Email address (from: for git send-email): " EMAIL
+
+echo "Writing git configuration to $GIT_CONFIG_GLOBAL"
+git config --add user.name "$FULL_NAME"
+git config --add user.email "$EMAIL"
+
+git config --global --add sendemail.from "$FULL_NAME <$EMAIL>"
+git config --global --add sendemail.smtpserver /usr/bin/msmtp
+git config --global --add sendemail.signedoffcc false
+git config --global --add sendemail.suppresscc self
+git config --global --add sendemail.suppressfrom true
+git config --global --add sendemail.chainreplyto false
+
+echo "Done"
