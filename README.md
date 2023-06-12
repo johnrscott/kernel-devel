@@ -151,6 +151,39 @@ After make some changes to the branch,
 
 ## Email setup
 
+Install the following packages:
+
+```bash
+sudo apt install msmtp isync gnupg git-email
+```
+
+The email configuration uses `mbsync` and `msmtp`. I have only tested gmail so far; to set that up, first set up a google app password:
+
+1. Go to your google account page (not gmail)
+2. Navigate to Security, then 2-step verification, then app passwords
+3. Create a new app; set the app to Mail and the device to Custom.
+4. Click generate, and copy the password to the config file below.
+
+Next, encrypt that password by running:
+
+```bash
+# From the repository root
+mkdir ~/secrets
+cd secrets/
+
+# Copy your password into this file, save and close
+emacs mbsync.pw
+
+# Follow through all the options. You can leave the comment field
+# blank (after your name and email). Choose 4096 length RSA keys.
+gpg --full-generate-key
+gpg --encrypt --recipient "{your-email-address}" mbsync.pw
+
+
+```
+
+
+These are configured by running `init_mail`. 
 
 
 ## Email setup 2
@@ -187,10 +220,6 @@ sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 
 The password `{email_app_pass}` is not your email password; it is an app password generated in your google settings. See [here](https://support.google.com/accounts/answer/185833?hl=en), or search for `google mail app password`. At the time I did it:
 
-1. Go to your google account page (not gmail)
-2. Navigate to Security, then 2-step verification, then app passwords
-3. Create a new app; set the app to Mail and the device to Custom.
-4. Click generate, and copy the password to the config file below.
 
 Synchronise the mail directory by running `offlineimap`. 
 
