@@ -17,7 +17,12 @@ root_mount
 /.kern_ver
 sysroot
 pulse
-mail
+Maildir
 offlineimaprc
 network-security.data
 gitconfig
+secrets
+mbsyncrc
+
+
+.config

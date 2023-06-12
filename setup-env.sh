@@ -12,15 +12,24 @@ export KDEV_ENABLED=1
 # -is-located-from-within-the-script
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
+export PATH=$SCRIPT_DIR/bin:$SCRIPT_DIR/sysroot/bin/:$PATH
+
+# This is better as an environment variable than a command. Refactor.
+export REPO_DIR=$(repo_root)
+
+export CONFIG=$REPO_DIR/.config
+mkdir -p $CONFIG
+
 # https://www.gnu.org/software/emacs/manual/
 # html_node/emacs/Find-Init.html
 export XDG_CONFIG_HOME=$SCRIPT_DIR
 export PS1="\[\e[43m\]KDEV\[\e[m\] $PS1"
-export PATH=$SCRIPT_DIR/bin:$SCRIPT_DIR/sysroot/bin/:$PATH
 
 # See man git-config
-export GIT_CONFIG_GLOBAL=$SCRIPT_DIR/gitconfig
+export GIT_CONFIG_GLOBAL=$CONFIG/gitconfig
 
 echo "Kernel development environment enabled"
 
-alias cdlinux='cd $(repo_root)/src/linux-$(kernel_version)'
+alias cdlinux='cd $REPO_DIR/src/linux-$(kernel_version)'
+
+alias mbsync="mbsync -c $CONFIG/mbsyncrc"

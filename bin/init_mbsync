@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+# This file generates the mbsync configuration used by the repository
+
+cat > $CONFIG/mbsyncrc << EOF
+CopyArrivalDate yes   # Don't mess up message timestamps
+Remove Both           # Autmatically remove deleted folders from the local copy
+Expunge Both          # Expunge delete messages locally and remote
+
+IMAPAccount personal
+Host imap.gmail.com
+Port 993
+User johnrscott0@gmail.com
+PassCmd "gpg --batch -q --for-your-eyes-only --no-tty -d $REPO_DIR/secrets/mbsync.pw.gpg"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore personal-remote
+Account personal
+
+MaildirStore personal-local
+Path $REPO_DIR/Maildir/
+Inbox $REPO_DIR/Maildir/Inbox
+SubFolders Verbatim
+
+Channel personal-default
+Far :personal-remote:
+Near :personal-local:
+Patterns * ![Gmail]*
+Create Both           # Automatically create near folders in the local copy
+SyncState *
+Sync All
+
+Channel personal-sent
+Far :personal-remote:"[Gmail]/Sent Mail"
+Near :personal-local:sent
+Create Near
+Sync Pull
+
+Channel personal-trash
+Far :personal-remote:"[Gmail]/Trash"
+Near :personal-local:trash
+Create Near
+Sync Pull
+EOF
