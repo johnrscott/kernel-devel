@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# This file generates the mbsync configuration used by the repository
+# This file generates the mbsync configuration used for receiving mail, and the 
 
 cat > $CONFIG/mbsyncrc << EOF
 CopyArrivalDate yes   # Don't mess up message timestamps
@@ -10,7 +10,7 @@ Expunge Both          # Expunge delete messages locally and remote
 IMAPAccount personal
 Host imap.gmail.com
 Port 993
-User johnrscott0@gmail.com
+User $EMAIL_ADDRESS
 PassCmd "gpg --batch -q --for-your-eyes-only --no-tty -d $REPO_DIR/secrets/mbsync.pw.gpg"
 SSLType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
@@ -42,4 +42,18 @@ Far :personal-remote:"[Gmail]/Trash"
 Near :personal-local:trash
 Create Near
 Sync Pull
+EOF
+
+cat > $CONFIG/msmtprc <<EOF
+account default
+host smtp.gmail.com
+port 587
+from $EMAIL_ADDRESS
+auth login
+user $EMAIL_ADDRESS
+passwordeval "gpg -q --for-your-eyes-only --no-tty -d $REPO_DIR/secrets/mbsync.pw.gpg"
+tls on
+tls_certcheck off
+tls_starttls on
+logfile $REPO_DIR/msmtp.log
 EOF

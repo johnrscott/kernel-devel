@@ -7,6 +7,13 @@ fi
 
 export KDEV_ENABLED=1
 
+# Full name for commits and emails
+export FULL_NAME="John Scott"
+
+# Anything that works with mbsync should be
+# fine. Only tested gmail
+export EMAIL_ADDRESS="johnrscott0@gmail.com"
+
 # https://stackoverflow.com/questions/59895/
 # how-do-i-get-the-directory-where-a-bash-script
 # -is-located-from-within-the-script
@@ -28,8 +35,14 @@ export PS1="\[\e[43m\]KDEV\[\e[m\] $PS1"
 # See man git-config
 export GIT_CONFIG_GLOBAL=$CONFIG/gitconfig
 
-echo "Kernel development environment enabled"
-
+# Alias commands; mainly to point to the local
+# config files.
+alias mbsync="mbsync -c $CONFIG/mbsyncrc"
+alias msmtp="msmtp -C $CONFIG/msmtprc"
 alias cdlinux='cd $REPO_DIR/src/linux-$(kernel_version)'
 
-alias mbsync="mbsync -c $CONFIG/mbsyncrc"
+# Perform initial configurations of applications
+# Can be safely called multiple times
+init_gitconfig
+
+echo "Kernel development environment enabled"

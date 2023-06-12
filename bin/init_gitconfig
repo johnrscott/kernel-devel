@@ -11,10 +11,6 @@ if [ -f $GIT_CONFIG_GLOBAL ]; then
     exit
 fi
 
-echo "Starting one-time git configuration"
-read -p "Full name (for git commits): " FULL_NAME
-read -p "Email address (from: for git send-email): " EMAIL
-
 echo "Writing git configuration to $GIT_CONFIG_GLOBAL"
 git config --add user.name "$FULL_NAME"
 git config --add user.email "$EMAIL"
